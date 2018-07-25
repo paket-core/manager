@@ -79,13 +79,18 @@ Debugging settings (DO NOT USE THEM ON PRODUCTION ENVIRONMENT):
 Deploy, Test, and Run PAKET Software
 ------------------------------------
 
-1. Deploy the software (this will initialize the database):
+1. Deploy the software:
 
 ```
 ./deploy.sh
 ```
 
-2. Test the software:
+2. Initialize the database:
+```
+./init_db.sh
+```
+
+3. Test the software:
 ```
 ./test.sh
 ```
@@ -96,12 +101,12 @@ into your virtual environment and the script will take care of the rest:
 pip install pycodestyle pylint
 ```
 
-3. Run the servers:
+4. Run the servers:
 ```
 ./run.sh
 ```
 
-4. Access the swagger Web interfaces from a browser (that the ports will change
+5. Access the swagger Web interfaces from a browser (that the ports will change
    according to your webserver settings):
 http://localhost:8000
 http://localhost:8001
