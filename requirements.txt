@@ -1,4 +1,0 @@
-../paket-stellar
-../py-stellar-base
-../util
-../webserver
