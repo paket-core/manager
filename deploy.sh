@@ -22,7 +22,7 @@ SERVERS=(api funder)
 set -e
 for server in "${SERVERS[@]}"; do
     clone_or_pull $server
-    requirements="$(cat ../$server/requirements.txt <(echo $requirements) | sort -u)"
+    requirements="$(cat ../$server/requirements.txt <<<$requirements | sort -u)"
 done
 while read package; do
     if [ "${package:0:3}" = '../' ]; then
