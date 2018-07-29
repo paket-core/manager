@@ -9,7 +9,7 @@ SOURCE="$(grep -Pm1 'url\W*=\W*http' .git/config 2> /dev/null | grep -Po 'http.*
 SOURCE="${SOURCE:-$DEFAULT_SOURCE}"
 
 activate_or_create_venv() {
-    if [ -d venv ]; then
+    if ! [ -d venv ]; then
         python3 -m venv venv
         ./venv/bin/pip install --upgrade pip pycodestyle pylint
     fi

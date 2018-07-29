@@ -5,11 +5,12 @@
 
 for server in "${PAKET_SERVERS[@]}"; do
     requirements="$(cat ../$server/requirements.txt <<<$requirements | sort -u)"
-    requirements="$requirements\n..$server"
+    requirements="$requirements
+..$server"
 done
 PAKET_DB_NAME=test
 export PAKET_DB_NAME
-for server in "${PAKET_SERVERS[@]}"; do
+while read package; do
     if [ "${package:0:3}" = '../' ]; then
         pushd "$package" > /dev/null
         echo
