@@ -55,7 +55,7 @@ Webserver settings:
     (defaults to `os.urandom(24)` in runtime)
   * `PAKET_SERVER_LIMIT` - the default rate limit of your servers (defaults to
     '100 per minute')
-  * `PAKET_API_PORT' - the port on which the funding server will run (defaults
+  * `PAKET_API_PORT` - the port on which the funding server will run (defaults
     to 8000)
   * `PAKET_FUNDER_PORT` - the port on which the funding server will run
     (defaults to 8001)
