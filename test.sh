@@ -6,7 +6,7 @@
 for server in "${PAKET_SERVERS[@]}"; do
     requirements="$(cat ../$server/requirements.txt <<<$requirements | sort -u)"
     requirements="$requirements
-..$server"
+../$server"
 done
 PAKET_DB_NAME=test
 export PAKET_DB_NAME
