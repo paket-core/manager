@@ -4,7 +4,7 @@
 . paket.env
 
 # Get base source of repository.
-DEFAULT_SOURCE=https://github.com/paket-core/manager
+DEFAULT_SOURCE=https://github.com/paket-core
 SOURCE="$(grep -Pm1 'url\W*=\W*http' .git/config 2> /dev/null | grep -Po 'http.*(?=/manager)')"
 SOURCE="${SOURCE:-$DEFAULT_SOURCE}"
 
