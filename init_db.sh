@@ -1,10 +1,9 @@
 #!/bin/bash
-# Deploy a PaKeT server.
+# Initialize PAKET database.
 
 . paket.env
 
-SERVERS=(api funder)
-for server in "${SERVERS[@]}"; do
+for server in "${PAKET_SERVERS[@]}"; do
     pushd "../$server"
     python -c "import util.logger as l; l.setup(); import db; db.init_db()"
     popd
