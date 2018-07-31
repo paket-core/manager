@@ -36,7 +36,7 @@ done
 while read package; do
     if [ "${package:0:3}" = '../' ]; then
         clone_or_pull_repo "${package:3}"
-        requirements="$(cat "../$package/requirements.txt" <(echo "$requirements") | sort -u)"
+        requirements="$(cat "$package/requirements.txt" 2> /dev/null <(echo "$requirements") | sort -u)"
     fi
 done <<<"$requirements"
 pip install -r <(echo "$requirements")
