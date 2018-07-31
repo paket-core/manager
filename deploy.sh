@@ -34,7 +34,6 @@ for server in "${PAKET_SERVERS[@]}"; do
     requirements="$(cat "../$server/requirements.txt" <(echo "$requirements") | sort -u)"
 done
 while read package; do
-    continue
     if [ "${package:0:3}" = '../' ]; then
         clone_or_pull_repo "${package:3}"
         requirements="$(cat "../$package/requirements.txt" <(echo "$requirements") | sort -u)"
@@ -42,5 +41,3 @@ while read package; do
 done <<<"$requirements"
 pip install -r <(echo "$requirements")
 set +e
-
-exit 0
