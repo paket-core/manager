@@ -21,4 +21,4 @@ while read package; do
         python -m unittest 2>&1 | tail -3 | head -1
         popd > /dev/null
     fi
-done <<<$requirements
+done <<<"$requirements"
