@@ -3,13 +3,14 @@
 
 . paket.env
 
-for server in "${PAKET_SERVERS[@]}"; do
-    cmd="python routes.py"
+if [ "$1" ]; then
+    PYTHONPATH="..:../$1" ./venv/bin/python -m $1
+else
+    for server in "${PAKET_SERVERS[@]}"; do
     if [ "$TMUX" ]; then
-        cmd="tmux split-pane -d $cmd"
+        tmux split-pane -d "$0" $server
+    else
+        "$0" $server &
     fi
-    cmd="$cmd"
-    pushd "../$server"
-    $cmd &
-    popd
-done
+    done
+fi

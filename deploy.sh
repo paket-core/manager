@@ -17,12 +17,13 @@ activate_or_create_venv() {
 }
 
 clone_or_pull_repo() {
-    repo="$1"
-    if [ -d "../$repo" ]; then
-        git -C "../$repo" pull
+    echo "$1:"
+    if [ -d "../$1" ]; then
+        git -C "../$1" pull
     else
-        git clone "$SOURCE/$repo" "../$repo"
+        git clone "$SOURCE/$1" "../$1"
     fi
+    echo
 }
 
 # Get or update PAKET servers, collect requirements, and install them.
