@@ -40,11 +40,22 @@ pip install --upgrade pip
 
 6. Make sure your `paket.env` contains all desired variables and values.
 
+System settings:
+  * `PAKET_SERVERS` - an array of servers you wish to run - recommended value (with parenthesis): (funder api)
+
 Stellar settings:
-  * `PAKET_ISSUER_PUB` - the issuer pubkey (has no default, software will
+  * `PAKET_ISSUER_PUBKEY` - the issuer pubkey (has no default, software will
     refuse to run without it)
   * `PAKET_HORIZON_SERVER` - your preferred horizon server (defaults to
     'https://horizon-testnet.stellar.org')
+
+Payment settings:
+  * `PAKET_FUNDER_SEED` - the seed for an account that sells BUL and XLM
+  * `PAKET_PAYMENT_XPUB` - an x-public-key for generating payment addresses
+  * `PAKET_BUL_STROOPS_FOR_EUR_CENT` - the integer number of BUL stroops that a EUR cent buys
+  * `PAKET_BASIC_MONTHLY_ALLOWANCE` - monthly purchase allowance for a user that passed basic KYC check
+  * `PAKET_MINUMUM_PAYMENT` - minimal acceptable payment in EUR cents
+  * `PAKET_ETHERSCAN_API_KEY` - an API key for monitoring ETH payments
 
 Database (MySQL) access settings:
   * `PAKET_DB_HOST` - the host of your MySQL server (defaults to '127.0.0.1')
