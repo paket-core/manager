@@ -6,37 +6,39 @@ The PAKET Manager is a small collection of scripts used to autoatically deploy, 
 Setup Your Manager
 ------------------
 
-1. Clone the repository:
-
+1. Create a project directory and enter it:
+```shell
+mkdir paket
+cd paket
 ```
+
+2. Clone the repository inside the project directory:
+```shell
 git clone git@github.com:paket-core/manager
 ```
 
 Note that this method requires using SSH keys. If you would rather clone the
 repository over public access simply use:
-
-```
+```shell
 git clone https://github.com/paket-core/manager
 ```
 
-2. Create a python virtual environment:
-
-```
+3. Create a python virtual environment:
+```shell
 python3 -m venv venv
 ```
 
-3. Activate the python virtual environment:
-
-```
+4. Activate the python virtual environment:
+```shell
 . venv/bin/activate
 ```
 
-4. Make sure you are using an updated pip:
-```
+5. Make sure you are using an updated pip:
+```shell
 pip install --upgrade pip
 ```
 
-5. Make sure your `paket.env` contains all desired variables.
+6. Make sure your `paket.env` contains all desired variables and values.
 
 Stellar settings:
   * `PAKET_ISSUER_PUB` - the issuer pubkey (has no default, software will
@@ -80,29 +82,30 @@ Deploy, Test, and Run PAKET Software
 ------------------------------------
 
 1. Deploy the software:
-
-```
+```shell
 ./deploy.sh
 ```
 
+Note that this will create several directories in the project directory, which is the repository's *parent* directory.
+
 2. Initialize the database:
-```
+```shell
 ./init_db.sh
 ```
 
 3. Test the software:
-```
+```shell
 ./test.sh
 ```
 
 If you wish to use pycodestyle and/or pylint in your tests, just install them
 into your virtual environment and the script will take care of the rest:
-```
+```shell
 pip install pycodestyle pylint
 ```
 
 4. Run the servers:
-```
+```shell
 ./run.sh
 ```
 
