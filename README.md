@@ -111,5 +111,5 @@ pip install pycodestyle pylint
 
 5. Access the swagger Web interfaces from a browser (that the ports will change
    according to your webserver settings):
-http://localhost:8000
-http://localhost:8001
+  * http://localhost:8000
+  * http://localhost:8001
