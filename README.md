@@ -1,7 +1,7 @@
 PAKET Manager
 =============
 
-The PAKET Manager is a small collection of scripts used to autoatically deploy, test, and run PAKET software.
+The PAKET Manager is a small collection of scripts used to automatically deploy, test, and run PAKET software.
 
 Setup Your Manager
 ------------------
@@ -61,14 +61,14 @@ Database (MySQL) access settings:
   * `PAKET_DB_HOST` - the host of your MySQL server (defaults to '127.0.0.1')
   * `PAKET_DB_PORT` - the port of your MySQL server (defaults to 3306)
   * `PAKET_DB_USER` - the user on your MySQL server (defaults to 'root')
-  * `PAKET_DB_PASSWORD` - the user on your MySQL server (defaults to None)
+  * `PAKET_DB_PASSWORD` - the user password on your MySQL server (defaults to None)
 
 Webserver settings:
   * `PAKET_SESSIONS_KEY` - a secret session key, for securing user sessions
     (defaults to `os.urandom(24)` in runtime)
   * `PAKET_SERVER_LIMIT` - the default rate limit of your servers (defaults to
     '100 per minute')
-  * `PAKET_API_PORT` - the port on which the funding server will run (defaults
+  * `PAKET_API_PORT` - the port on which the API server will run (defaults
     to 8000)
   * `PAKET_FUNDER_PORT` - the port on which the funding server will run
     (defaults to 8001)
