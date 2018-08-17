@@ -5,7 +5,8 @@
 
 # Get base source of repository.
 DEFAULT_SOURCE=https://github.com/paket-core
-SOURCE="$(grep -Pm1 'url\W*=\W*http' .git/config 2> /dev/null | grep -Po 'http.*(?=/manager)')"
+SOURCE="$(grep -Pm1 'url\W*=\W*git@' .git/config 2> /dev/null | grep -Po 'git@.*(?=/manager)')"
+SOURCE="${SOURCE:-$(grep -Pm1 'url\W*=\W*http' .git/config 2> /dev/null | grep -Po 'http.*(?=/manager)')}"
 SOURCE="${SOURCE:-$DEFAULT_SOURCE}"
 
 activate_or_create_venv() {
