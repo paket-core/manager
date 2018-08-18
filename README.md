@@ -68,10 +68,10 @@ Webserver settings:
     (defaults to `os.urandom(24)` in runtime)
   * `PAKET_SERVER_LIMIT` - the default rate limit of your servers (defaults to
     '100 per minute')
-  * `PAKET_API_PORT` - the port on which the API server will run (defaults
-    to 8000)
+  * `PAKET_ROUTER_PORT` - the port on which the router server will run (defaults to 8000)
+  * `PAKET_BRIDGE_PORT` - the port on which the bridge server will run (defaults to 8001)
   * `PAKET_FUNDER_PORT` - the port on which the funding server will run
-    (defaults to 8001)
+    (defaults to 8002)
 
 Logging settings:
   * `PAKET_LOG_DIR` - the path on the filesystem to store the log file in
@@ -124,3 +124,4 @@ pip install pycodestyle pylint
    according to your webserver settings):
   * http://localhost:8000
   * http://localhost:8001
+  * http://localhost:8002
