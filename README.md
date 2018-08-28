@@ -12,15 +12,17 @@ mkdir paket
 cd paket
 ```
 
-2. Clone the repository inside the project directory:
+2. Clone the repository inside the project directory and enter it:
 ```shell
 git clone git@github.com:paket-core/manager
+cd manager
 ```
 
 Note that this method requires using SSH keys. If you would rather clone the
 repository over public access simply use:
 ```shell
 git clone https://github.com/paket-core/manager
+cd manager
 ```
 
 3. Create a python virtual environment:
