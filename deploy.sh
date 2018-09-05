@@ -20,6 +20,8 @@ activate_or_create_venv() {
 clone_or_pull_repo() {
     echo "$1:"
     if [ -d "../$1" ]; then
+        read -n 1 -p "Update local package at $1? [Y|n] " q < /dev/tty; echo
+        [ "$q" = n ] && return 0
         git -C "../$1" pull
     else
         git clone "$SOURCE/$1" "../$1"
