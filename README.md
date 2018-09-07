@@ -51,9 +51,17 @@ Stellar settings:
   * `PAKET_HORIZON_SERVER` - your preferred horizon server (defaults to
     'https://horizon-testnet.stellar.org')
 
+Registration settings:
+  * `AUTHY_API_KEY` - API key for authy authentication service 
+  * `TOKEN_LENGTH` - length of verification tokens delivered to users
+
 Payment settings:
   * `PAKET_FUNDER_SEED` - the seed for an account that sells BUL and XLM
   * `PAKET_PAYMENT_XPUB` - an x-public-key for generating payment addresses
+  * `HOURLY_FUND_LIMIT` - maximum amount of EUR cents allowed for funding per hour
+  * `DAILY_FUND_LIMIT` - maximum amount of EUR cents allowed for funding per day
+  * `XLM_STARTING_BALANCE` - amount of XLM stroops to be funded to new accounts
+  * `BUL_STARTING_BALANCE` - amount of BUL stroops to be funded to new accounts
   * `PAKET_BUL_STROOPS_FOR_EUR_CENT` - the integer number of BUL stroops that a EUR cent buys
   * `PAKET_BASIC_MONTHLY_ALLOWANCE` - monthly purchase allowance for a user that passed basic KYC check
   * `PAKET_MINUMUM_PAYMENT` - minimal acceptable payment in EUR cents
