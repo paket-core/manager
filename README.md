@@ -53,7 +53,6 @@ Stellar settings:
 
 Registration settings:
   * `PAKET_AUTHY_API_KEY` - API key for authy authentication service 
-  * `PAKET_TOKEN_LENGTH` - length of verification tokens delivered to users
 
 Payment settings:
   * `PAKET_FUNDER_SEED` - the seed for an account that sells BUL and XLM
