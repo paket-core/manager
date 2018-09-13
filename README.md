@@ -88,7 +88,7 @@ Logging settings:
   * `PAKET_LOG_FILE` - the name of the log file (defaults to 'paket.log')
   * `PAKET_LOG_FMT` - log format, using python logging standartds (defaults to
     '%(asctime)s %(levelname).3s: %(message)s - %(name)s +%(lineno)03d')
-  * `PAKET_LOG_DATE_FMT' - log date format, using python logging standartds
+  * `PAKET_LOG_DATE_FMT` - log date format, using python logging standartds
     (defaults to '%Y-%m-%d %H:%M:%S')
   * `PAKET_LOG_LEVEL` - the minimal logging level, using python standartds
     (defaults to 10, which is `logging.DEBUG`)

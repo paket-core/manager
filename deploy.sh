@@ -17,14 +17,21 @@ activate_or_create_venv() {
     . venv/bin/activate
 }
 
-clone_or_pull_repo() {
+clone_or_fetch_repo() {
     echo "$1:"
     if [ -d "../$1" ]; then
         read -n 1 -p "Update local package at $1? [Y|n] " q < /dev/tty; echo
         [ "$q" = n ] && return 0
-        git -C "../$1" pull
+        git -C "../$1" fetch
     else
         git clone "$SOURCE/$1" "../$1"
+    fi
+    clean_package_name="$(tr '-' '_' <<<$1)"
+    git_state_var_name="PAKET_GIT_STATE_${clean_package_name^^}"
+    git_state="${!git_state_var_name}"
+    if [ "$git_state" ]; then
+        read -n 1 -p "Checkout $git_state? [Y|n] " q < /dev/tty; echo
+        [ "$q" = n ] || git -C "../$1" checkout "$git_state"
     fi
     echo
 }
@@ -33,12 +40,12 @@ clone_or_pull_repo() {
 set -e
 [ "$VIRTUAL_ENV" ] || activate_or_create_venv
 for server in "${PAKET_SERVERS[@]}"; do
-    clone_or_pull_repo $server
+    clone_or_fetch_repo $server
     requirements="$(cat "../$server/requirements.txt" <(echo "$requirements") | sort -u)"
 done
 while read package; do
     if [ "${package:0:3}" = '../' ]; then
-        clone_or_pull_repo "${package:3}"
+        clone_or_fetch_repo "${package:3}"
         requirements="$(cat "$package/requirements.txt" 2> /dev/null <(echo "$requirements") | sort -u)"
     fi
 done <<<"$requirements"
