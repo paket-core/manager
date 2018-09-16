@@ -15,9 +15,9 @@ while read package; do
         pwd
         echo ---
         which pycodestyle > /dev/null && \
-            echo pycodestyle had $(pycodestyle --max-line-length=120 **/*.py 2>&1 | wc -l) issues
+            echo pycodestyle had $(pycodestyle --max-line-length=120 *.py **/*.py 2>&1 | wc -l) issues
         which pylint > /dev/null && \
-            pylint **/*.py 2>&1 | tail -2 | head -1
+            pylint *.py **/*.py 2>&1 | tail -2 | head -1
         python -m unittest 2>&1 | tail -3 | head -1
         popd > /dev/null
     fi
