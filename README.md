@@ -51,9 +51,16 @@ Stellar settings:
   * `PAKET_HORIZON_SERVER` - your preferred horizon server (defaults to
     'https://horizon-testnet.stellar.org')
 
+Registration settings:
+  * `PAKET_AUTHY_API_KEY` - API key for authy authentication service 
+
 Payment settings:
   * `PAKET_FUNDER_SEED` - the seed for an account that sells BUL and XLM
   * `PAKET_PAYMENT_XPUB` - an x-public-key for generating payment addresses
+  * `PAKET_HOURLY_FUND_LIMIT` - maximum amount of EUR cents allowed for funding per hour
+  * `PAKET_DAILY_FUND_LIMIT` - maximum amount of EUR cents allowed for funding per day
+  * `PAKET_EUR_XLM_STARTING_BALANCE` - amount of XLM stroops in EUR cent equivalent to be funded to new accounts
+  * `PAKET_EUR_BUL_STARTING_BALANCE` - amount of BUL stroops in EUR cent equivalent to be funded to new accounts
   * `PAKET_BUL_STROOPS_FOR_EUR_CENT` - the integer number of BUL stroops that a EUR cent buys
   * `PAKET_BASIC_MONTHLY_ALLOWANCE` - monthly purchase allowance for a user that passed basic KYC check
   * `PAKET_MINUMUM_PAYMENT` - minimal acceptable payment in EUR cents
@@ -81,7 +88,7 @@ Logging settings:
   * `PAKET_LOG_FILE` - the name of the log file (defaults to 'paket.log')
   * `PAKET_LOG_FMT` - log format, using python logging standartds (defaults to
     '%(asctime)s %(levelname).3s: %(message)s - %(name)s +%(lineno)03d')
-  * `PAKET_LOG_DATE_FMT' - log date format, using python logging standartds
+  * `PAKET_LOG_DATE_FMT` - log date format, using python logging standartds
     (defaults to '%Y-%m-%d %H:%M:%S')
   * `PAKET_LOG_LEVEL` - the minimal logging level, using python standartds
     (defaults to 10, which is `logging.DEBUG`)
