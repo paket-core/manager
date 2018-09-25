@@ -52,7 +52,8 @@ Stellar settings:
     'https://horizon-testnet.stellar.org')
 
 Registration settings:
-  * `PAKET_AUTHY_API_KEY` - API key for authy authentication service 
+  * `PAKET_VERIFY_API_KEY` - API key for Verify verification service 
+  * `PAKET_VERIFY_CODE_LENGTH` - number of verification digits sent
 
 Payment settings:
   * `PAKET_FUNDER_SEED` - the seed for an account that sells BUL and XLM
