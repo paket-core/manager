@@ -73,6 +73,9 @@ Database (MySQL) access settings:
   * `PAKET_DB_USER` - the user on your MySQL server (defaults to 'root')
   * `PAKET_DB_PASSWORD` - the user password on your MySQL server (defaults to None)
 
+Util settings:
+  * `PAKET_GOOGLE_API_KEY` - the API key for access Google Places API
+
 Webserver settings:
   * `PAKET_SESSIONS_KEY` - a secret session key, for securing user sessions
     (defaults to `os.urandom(24)` in runtime)
