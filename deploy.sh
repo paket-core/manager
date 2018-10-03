@@ -31,9 +31,10 @@ clone_or_fetch_repo() {
     git_state="${!git_state_var_name}"
     if [ "$git_state" ]; then
         read -n 1 -p "Checkout $git_state? [Y|n] " q < /dev/tty; echo
-        if [ "$q" = n ]; then
+        if ! [ "$q" = n ]; then
             git -C "../$1" checkout "$git_state"
-            git -C "../$1" pull
+            git -C "../$1" pull || true
+            git -C "../$1" checkout "$git_state"
         fi
     fi
     echo
