@@ -101,6 +101,12 @@ Debugging settings (DO NOT USE THEM ON PRODUCTION ENVIRONMENT):
   * `PAKET_ISSUER_SEED` - the issuer seed (defaults to None)
   * `PAKET_DEBUG` - to run PAKET software in debug mode, with debug calls and no signature checking.
   * `FLASK_DEBUG` - to run the web server in debug mode with auto reloading.
+  * `PAKET_TEST_LAUNCHER_SEED` - secret key of launcher account, used for simulation.
+  * `PAKET_TEST_COURIER_SEED` - secret key of courier account, used for simulation.
+  * `PAKET_TEST_RECIPIENT_SEED` - secret key of recipient account, used for simulation.
+  * `PAKET_SIMULATION_XLM_START_BALANCE` - amount of XLM stroops to be funded to simulation accounts.
+  * `PAKET_SIMULATION_BUL_START_BALANCE` - amount of BUL stroops to be funded to simulation accounts.
+  * `ROUTER_URL` = url of Router server, used for managing packages.
 
 Deploy, Test, and Run PAKET Software
 ------------------------------------
