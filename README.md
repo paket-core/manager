@@ -75,6 +75,9 @@ Database (MySQL) access settings:
 
 Util settings:
   * `PAKET_GOOGLE_API_KEY` - the API key for access Google Places API
+ 
+Push notifications settings:
+  * `PAKET_PATH_TO_CERT` - path to account certificate. It can be downloaded as JSON file from the Firebase console
 
 Webserver settings:
   * `PAKET_SESSIONS_KEY` - a secret session key, for securing user sessions
