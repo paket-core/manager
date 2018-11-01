@@ -1,0 +1,2 @@
+gitstats==0.2.4
+Logbook==1.4.1
