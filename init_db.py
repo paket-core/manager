@@ -12,6 +12,7 @@ if __name__ == '__main__':
         sys.exit()
     util.logger.setup()
     # This allows import from outside CWD.
+    sys.path.pop(0)
     sys.path.append(sys.argv[2])
     # pylint: disable=import-error
     import db
