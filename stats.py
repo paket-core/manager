@@ -129,7 +129,7 @@ def insert_new_commits(repo):
 
 if __name__ == '__main__':
     for server_name in SERVERS:
-        add_stat(server_name, 1 if get_server_stat(
+        add_stat("webserver_{}".format(server_name), 1 if get_server_stat(
             "https://{}.paket.global".format(server_name)
         ) else 0)
     _ = [insert_new_commits(repo) for repo in REPOS]
