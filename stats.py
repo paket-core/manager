@@ -63,7 +63,7 @@ def get_stat(metric=None, from_time=None, limit=None):
 
 
 # Server stats
-SERVERS = ['route', 'bridge', 'fund', 'explorer']
+SERVERS = ['www', 'route', 'bridge', 'fund', 'explorer']
 
 
 def get_server_stat(server_uri):
