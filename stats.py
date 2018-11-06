@@ -86,7 +86,7 @@ def get_commits_from_page(repo, page=1, get_num_of_pages=False):
     page = requests.get("https://api.github.com/repos/paket-core/{}/commits?page={}".format(repo, page))
     commits = [{
         'hash': commit['sha'],
-        'author': commit['author']['name'],
+        'author': commit['commit']['author']['name'],
         'timestamp': datetime.datetime.strptime(commit['commit']['author']['date'], '%Y-%m-%dT%H:%M:%SZ')
     } for commit in page.json()]
 
