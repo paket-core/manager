@@ -120,7 +120,7 @@ def get_repo_commits(repo, from_time=None):
 def insert_new_commits(repo):
     """Get commits from all repos from a specified time."""
     try:
-        last_commit_timestamp = get_stat("commit_{}_*".format(repo), limit=1)[0]['timestamp']
+        last_commit_timestamp = get_stat("commit_{}_%".format(repo), limit=1)[0]['timestamp']
     except IndexError:
         last_commit_timestamp = datetime.datetime.fromtimestamp(0)
     for commit in get_repo_commits(repo, last_commit_timestamp):
