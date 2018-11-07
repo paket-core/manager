@@ -75,7 +75,7 @@ def get_server_stat(server_uri):
 
 
 # GitHub stats
-REPOS = ['bridge', 'funder', 'manager', 'mobile', 'paket-stellar', 'router', 'util', 'webserver', 'website']
+REPOS = ['bridge', 'explorer', 'funder', 'manager', 'mobile', 'paket-stellar', 'router', 'util', 'webserver', 'website']
 
 
 def get_commits_from_page(repo, page=1, get_num_of_pages=False):
