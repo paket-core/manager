@@ -57,7 +57,6 @@ def get_stat(metric=None, from_time=None, limit=None):
         conditions.append('LIMIT %s')
         args.append(limit)
     with SQL_CONNECTION() as sql:
-        print("SELECT * FROM stats {}".format(' '.join(conditions)))
         sql.execute("SELECT * FROM stats WHERE {}".format(' '.join(conditions)), args)
         return sql.fetchall()
 
@@ -76,9 +75,7 @@ def get_server_stat(server_uri):
 
 
 # GitHub stats
-REPOS = [
-    'bridge', 'funder', 'manager', 'mobile', 'os-projects', 'paket-stellar',
-    'router', 'util', 'webserver', 'website']
+REPOS = ['bridge', 'funder', 'manager', 'mobile', 'paket-stellar', 'router', 'util', 'webserver', 'website']
 
 
 def get_commits_from_page(repo, page=1, get_num_of_pages=False):
@@ -120,7 +117,7 @@ def get_repo_commits(repo, from_time=None):
 def insert_new_commits(repo):
     """Get commits from all repos from a specified time."""
     try:
-        last_commit_timestamp = get_stat("commit_{}_%".format(repo), limit=1)[0]['timestamp']
+        last_commit_timestamp = get_stat("commit_{}_%".format(repo), limit=1)[0][b'timestamp']
     except (IndexError, KeyError):
         last_commit_timestamp = datetime.datetime.fromtimestamp(0)
     for commit in get_repo_commits(repo, last_commit_timestamp):
