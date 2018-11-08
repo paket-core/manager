@@ -96,19 +96,19 @@ def get_commits_from_page(repo, page=1, get_num_of_pages=False):
     return commits
 
 
-def get_repo_commits(repo, from_time=None):
+def get_repo_commits(repo, after_time=None):
     """Get all commits of a repo from a point in time."""
-    if not from_time:
-        from_time = datetime.datetime.now() - datetime.timedelta(days=30)
+    if not after_time:
+        after_time = datetime.datetime.now() - datetime.timedelta(days=30)
     commits, num_of_pages = get_commits_from_page(repo, get_num_of_pages=True)
-    if commits[-1]['timestamp'] >= from_time:
+    if commits[-1]['timestamp'] > after_time:
         for page_number in range(2, num_of_pages + 1):
-            if commits[-1]['timestamp'] < from_time:
+            if commits[-1]['timestamp'] <= after_time:
                 break
             commits += get_commits_from_page(repo, page_number)
 
     for commit_index in range(len(commits) - 1, -1, -1):
-        if commits[commit_index]['timestamp'] >= from_time:
+        if commits[commit_index]['timestamp'] > after_time:
             break
         commits.pop()
     return commits
