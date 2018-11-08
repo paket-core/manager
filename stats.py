@@ -2,9 +2,8 @@
 "Collect stats and toss them in a table"
 import datetime
 import logging
+import sys
 import os
-
-import requests
 
 import util.logger
 import util.db
@@ -24,109 +23,84 @@ def init_db():
     """Initialize the database."""
     with SQL_CONNECTION() as sql:
         sql.execute('''
-            CREATE TABLE stats(
+            CREATE TABLE servers(
                 timestamp TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-                metric VARCHAR(256) NOT NULL,
-                value VARCHAR(256) NOT NULL)''')
-        LOGGER.debug('stats table created')
+                subdomain VARCHAR(256) NOT NULL,
+                trouble INTEGER NOT NULL)''')
+        LOGGER.debug('servers table created')
+        sql.execute('''
+            CREATE TABLE commits(
+                timestamp TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+                repo VARCHAR(32) NOT NULL,
+                hash VARCHAR(40) NOT NULL UNIQUE,
+                author VARCHAR(256) NOT NULL,
+                files_changed INTEGER,
+                insertions INTEGER,
+                deletions INTEGER)''')
+        LOGGER.debug('commits table created')
 
 
-def add_stat(metric, value, timestamp=None):
+def add_server_status(subdomain, status):
     """Add a stat."""
     with SQL_CONNECTION() as sql:
-        sql.execute("INSERT INTO stats VALUES(%s, %s, %s)", (timestamp, metric, value))
+        sql.execute("INSERT INTO servers(subdomain, trouble) VALUES(%s, %s)", (subdomain, 0 if status == 200 else 1))
 
 
-def clear_stat(metric):
-    """Remove all stats of a specific metric."""
+def add_commit(args):
+    """Add a commit."""
     with SQL_CONNECTION() as sql:
-        sql.execute("DELETE FROM stats WHERE metric = %s", (metric,))
+        sql.execute("INSERT INTO commits VALUES(%s, %s, %s, %s, %s, %s, %s)", args)
 
 
-def get_stat(metric=None, from_time=None, limit=None):
-    """Get all stats, optionally of a specified metric, optionally from a specified time."""
-    conditions, args = ['1'], []
-    if metric:
-        conditions.append('AND metric like %s')
-        args.append(metric)
-    if from_time:
-        conditions.append('AND timestamp >= %s')
-        args.append(from_time)
-    conditions.append('ORDER BY timestamp DESC')
-    if limit:
-        conditions.append('LIMIT %s')
-        args.append(limit)
-    with SQL_CONNECTION() as sql:
-        sql.execute("SELECT * FROM stats WHERE {}".format(' '.join(conditions)), args)
-        return sql.fetchall()
+def convert_timestamp(unix_string):
+    """Convert a string holding an integer unix timestamp to a datetime object."""
+    return datetime.datetime.fromtimestamp(int(unix_string))
 
 
-# Server stats
-SERVERS = ['www', 'route', 'bridge', 'fund', 'explorer']
+def insert_servers():
+    """Insert server stats."""
+    for line in sys.stdin:
+        add_server_status(*line.split(' '))
 
 
-def get_server_stat(server_uri):
-    """Check server status."""
-    try:
-        return requests.get(server_uri).status_code == 200
-    # pylint: disable=broad-except
-    except Exception:
-        return False
-
-
-# GitHub stats
-REPOS = ['bridge', 'explorer', 'funder', 'manager', 'mobile', 'paket-stellar', 'router', 'util', 'webserver', 'website']
-
-
-def get_commits_from_page(repo, page=1, get_num_of_pages=False):
-    """Get data from a commits page."""
-    page = requests.get("https://api.github.com/repos/paket-core/{}/commits?page={}".format(repo, page))
-    commits = [{
-        'hash': commit['sha'],
-        'author': commit['commit']['author']['name'],
-        'timestamp': datetime.datetime.strptime(commit['commit']['author']['date'], '%Y-%m-%dT%H:%M:%SZ')
-    } for commit in page.json()]
-
-    if get_num_of_pages:
-        num_of_pages = int([
-            link['url'].split('page=')[1]
-            for link in requests.utils.parse_header_links(page.headers['link'])
-            if link['rel'] == 'last'][0])
-        return commits, num_of_pages
-    return commits
-
-
-def get_repo_commits(repo, after_time=None):
-    """Get all commits of a repo from a point in time."""
-    if not after_time:
-        after_time = datetime.datetime.now() - datetime.timedelta(days=30)
-    commits, num_of_pages = get_commits_from_page(repo, get_num_of_pages=True)
-    if commits[-1]['timestamp'] > after_time:
-        for page_number in range(2, num_of_pages + 1):
-            if commits[-1]['timestamp'] <= after_time:
+def insert_commits():
+    """Insert commit details."""
+    commit = {}
+    for line in sys.stdin.readlines() + ['0']:
+        if line == '\n':
+            continue
+        fields = line.strip().split(' ')
+        try:
+            timestamp = convert_timestamp(fields[0])
+            if commit:
+                try:
+                    add_commit([commit[key] for key in [
+                        'timestamp', 'repo', 'hash', 'author', 'files_changed', 'insertions', 'deletions']])
+                except util.db.mysql.connector.errors.IntegrityError:
+                    pass
+            if line == '0':
                 break
-            commits += get_commits_from_page(repo, page_number)
-
-    for commit_index in range(len(commits) - 1, -1, -1):
-        if commits[commit_index]['timestamp'] > after_time:
-            break
-        commits.pop()
-    return commits
-
-
-def insert_new_commits(repo):
-    """Get commits from all repos from a specified time."""
-    try:
-        last_commit_timestamp = get_stat("commit_{}_%".format(repo), limit=1)[0][b'timestamp']
-    except (IndexError, KeyError):
-        last_commit_timestamp = datetime.datetime.fromtimestamp(0)
-    for commit in get_repo_commits(repo, last_commit_timestamp):
-        add_stat("commit_{}_{}".format(repo, commit['author']), 1, commit['timestamp'])
+            commit = {
+                'timestamp': timestamp,
+                'repo': fields[1],
+                'hash': fields[2],
+                'author': '-'.join(fields[3:]),
+                'files_changed': 0,
+                'insertions': 0,
+                'deletions': 0}
+        except ValueError:
+            fields = fields[0].split('\t')
+            commit['files_changed'] += 1
+            if fields[0].isdigit():
+                commit['insertions'] += int(fields[0])
+            if fields[1].isdigit():
+                commit['deletions'] += int(fields[1])
 
 
 if __name__ == '__main__':
-    for server_name in SERVERS:
-        add_stat("webserver_{}".format(server_name), 0 if get_server_stat(
-            "https://{}.paket.global".format(server_name)
-        ) else 1)
-    _ = [insert_new_commits(repo) for repo in REPOS]
+    if len(sys.argv) != 2:
+        sys.exit(1)
+    if sys.argv[1] == 'servers':
+        insert_servers()
+    elif sys.argv[1] == 'commits':
+        insert_commits()
