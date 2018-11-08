@@ -5,8 +5,8 @@ import logging
 import sys
 import os
 
-import util.logger
 import util.db
+import util.logger
 
 LOGGER = logging.getLogger('pkt.db')
 DB_HOST = os.environ.get('PAKET_DB_HOST', '127.0.0.1')
