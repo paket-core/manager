@@ -43,7 +43,8 @@ def init_db():
 def add_server_status(subdomain, status):
     """Add a stat."""
     with SQL_CONNECTION() as sql:
-        sql.execute("INSERT INTO servers(subdomain, trouble) VALUES(%s, %s)", (subdomain, 0 if status == 200 else 1))
+        sql.execute("INSERT INTO servers(subdomain, trouble) VALUES(%s, %s)", (
+            subdomain, 0 if int(status) == 200 else 1))
 
 
 def add_commit(args):
