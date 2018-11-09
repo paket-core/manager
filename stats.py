@@ -8,7 +8,7 @@ import os
 import util.db
 import util.logger
 
-LOGGER = logging.getLogger('pkt.db')
+LOGGER = logging.getLogger('pkt.stats')
 DB_HOST = os.environ.get('PAKET_DB_HOST', '127.0.0.1')
 DB_PORT = int(os.environ.get('PAKET_DB_PORT', 3306))
 DB_USER = os.environ.get('PAKET_DB_USER', 'root')
