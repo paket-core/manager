@@ -26,14 +26,14 @@ elif [ "$1" == commits ]; then
         [ -d $repodir ] || git clone --bare https://github.com/paket-core/$repo $repodir > /dev/null
         pushd $repodir > /dev/null
         git fetch > /dev/null
-        last_commit_timestamp="$(echo "SELECT UNIX_TIMESTAMP(timestamp) FROM commits WHERE repo = '$repo' ORDER BY timestamp DESC LIMIT 1" | mysql -sNu"$PAKET_DB_USER" -p"$PAKET_DB_PASSWORD" "$PAKET_DB_NAME")"
+        last_commit_timestamp="$(echo "SELECT UNIX_TIMESTAMP(timestamp) FROM commits WHERE repo = '$repo' ORDER BY timestamp DESC LIMIT 1" | mysql -sNh"$PAKET_DB_HOST" -u"$PAKET_DB_USER" -p"$PAKET_DB_PASSWORD" "$PAKET_DB_NAME")"
         [ "$last_commit_timestamp" ] && since="--since=$last_commit_timestamp"
         git --no-pager log --all $since --numstat --format='%ct '$repo' %H %an'
         popd > /dev/null
     done | python ./stats.py commits
 
 else
-    #$0 servers
+    $0 servers
     $0 commits
 fi
 popd
