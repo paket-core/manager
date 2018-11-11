@@ -78,7 +78,7 @@ def insert_commits():
                     add_commit([commit[key] for key in [
                         'timestamp', 'repo', 'hash', 'author', 'files_changed', 'insertions', 'deletions']])
                 except util.db.mysql.connector.errors.IntegrityError:
-                    pass
+                    LOGGER.warning("duplicate commit: %s", commit)
             if line == '0':
                 break
             commit = {

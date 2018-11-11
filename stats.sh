@@ -26,7 +26,9 @@ elif [ "$1" == commits ]; then
         [ -d $repodir ] || git clone --bare https://github.com/paket-core/$repo $repodir > /dev/null
         pushd $repodir > /dev/null
         git fetch > /dev/null
-        git --no-pager log --all --numstat --format='%ct '$repo' %H %an' $(git reflog | awk '{print $1}')
+        last_commit_timestamp="$(echo "SELECT UNIX_TIMESTAMP(timestamp) FROM commits WHERE repo = '$repo' ORDER BY timestamp DESC LIMIT 1" | mysql -sNp"$PAKET_DB_PASSWORD" "$PAKET_DB_NAME")"
+        [ "$last_commit_timestamp" ] && since="--since=$last_commit_timestamp"
+        git --no-pager log --all $since --numstat --format='%ct '$repo' %H %an'
         popd > /dev/null
     done | python ./stats.py commits
 
