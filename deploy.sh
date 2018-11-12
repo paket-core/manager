@@ -7,18 +7,11 @@ SOURCE="$(grep -Pm1 'url\W*=\W*git@' .git/config 2> /dev/null | grep -Po 'git@.*
 SOURCE="${SOURCE:-$(grep -Pm1 'url\W*=\W*http' .git/config 2> /dev/null | grep -Po 'http.*(?=/manager)')}"
 SOURCE="${SOURCE:-$DEFAULT_SOURCE}"
 
+# Get our single CLI flag.
 if [ "$(printf "%s\n" "$1" | cut -c1)" = '-' ]; then
     UPDATE="$(printf "%s\n" "$1" | cut -c2)"
     shift
 fi
-
-activate_or_create_venv() {
-    if ! [ -d venv ]; then
-        python3 -m venv venv
-        ./venv/bin/pip install --upgrade pip pycodestyle pylint
-    fi
-    . paket.env
-}
 
 update_repo() {
     echo "$1:"
@@ -51,7 +44,12 @@ update_repo() {
 
 # Get or update PAKET servers, collect requirements, and install them.
 set -e
-[ "$VIRTUAL_ENV" ] || activate_or_create_venv
+if ! [ -d venv ]; then
+    python3 -m venv venv
+fi
+. paket.env
+pip install --upgrade pip pycodestyle pylint
+
 for server in "${PAKET_SERVERS[@]}"; do
     update_repo $server
     requirements="$(cat "../$server/requirements.txt" <(echo "$requirements") | sort -u)"
