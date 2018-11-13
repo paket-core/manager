@@ -4,11 +4,15 @@
 . paket.env
 
 if [ "$1" ]; then
-    PYTHONPATH="..:../$1" ./venv/bin/python -m $1
+    if [ "$FLASK_DEBUG" ]; then
+        PYTHONPATH="..:../$1" ./venv/bin/python -m $1
+    else
+        PYTHONPATH="../$1" uwsgi -s "/tmp/$1.sock" --manage-script-name --mount /=__init__:APP
+    fi
 else
     for server in "${PAKET_SERVERS[@]}"; do
         if [ "$TMUX" ]; then
-            tmux split-pane -d "$0" $server
+            tmux split-pane -dl5 "$0" $server
         else
             "$0" $server &
         fi

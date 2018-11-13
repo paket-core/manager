@@ -3,6 +3,11 @@
 
 . paket.env
 
+if ! [ "$FLASK_DEBUG" ]; then
+    pkill uwsgi
+    exit
+fi
+
 [ "$1" ] || "$0" ${PAKET_ROUTER_PORT:-5000} ${PAKET_BRIDGE_PORT:-5001} ${PAKET_FUNDER_PORT:-5002}
 while [ "$1" ]; do
     pid=$(netstat -lntp | grep -F "0.0.0.0:$1 " | grep -Po '\d*(?=/)')
