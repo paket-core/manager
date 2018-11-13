@@ -50,7 +50,8 @@ fi
 . paket.env
 pip install --upgrade pip pycodestyle pylint
 
-for server in "${PAKET_SERVERS[@]}"; do
+servers=( "$(basename "$(pwd)")" "${PAKET_SERVERS[@]}" )
+for server in ${servers[@]}; do
     update_repo $server
     requirements="$(cat "../$server/requirements.txt" <(echo "$requirements") | sort -u)"
 done
