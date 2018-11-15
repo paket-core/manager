@@ -1,0 +1,7 @@
+* * * * * /home/paket/poc/manager/stats.sh
+*/10 * * * * /home/paket/poc/manager/routine.sh monitor
+*/10 * * * * /home/paket/poc/manager/routine.sh pay
+*/10 * * * * /home/paket/poc/manager/routine.sh fund
+0 * * * * /home/paket/poc/manager/routine.sh simulate_launcher
+0 * * * * /home/paket/poc/manager/routine.sh simulate_courier
+0 * * * * /home/paket/poc/manager/routine.sh simulate_recipient
