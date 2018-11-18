@@ -7,14 +7,10 @@ if [ "$1" == servers ]; then
         echo 'servers stats already running'
         exit 1
     fi
-
     for subdomain in www route bridge fund explorer; do
         echo $subdomain $(curl -L --write-out %{http_code} --silent --output /dev/null https://$subdomain.paket.global)
     done | python ./stats.py servers
-
-	events_count="$(curl -X POST --silent --header 'Content-Type: application/x-www-form-urlencoded' --header 'Accept: application/json' -d 'max_events_num=200' 'https://route.paket.global/v3/events' | python3 -c 'import sys, json; print(len(json.load(sys.stdin)["events"]))')"
-    echo events_api $events_count | python ./stats.py servers
-
+    echo router_api $(curl -L --write-out %{http_code} --silent --output /dev/null -X POST http://route.paket.global/v3/events) | python ./stats.py servers
 elif [ "$1" == commits ]; then
     if pgrep -fx 'python ./stats.py commits'; then
         echo 'commits stats already running'
