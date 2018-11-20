@@ -98,7 +98,54 @@ def insert_commits():
                 commit['deletions'] += int(fields[1])
 
 
+# FIXME This is just for the Belgrade demo.
+def launch_demo_packages():
+    """Launch demo packages if there aren't enough already"""
+    oren_pubkey = 'orenpk'
+    yamit_pubkey = 'yamitpk'
+    oren_contact = 'orencnt'
+    yamit_contact = 'yamircnt'
+    from_location = 'from_location'
+    to_location = 'to location'
+    from_address = 'from address'
+    to_address = 'to address'
+    with SQL_CONNECTION() as sql:
+        sql.execute("""
+            select count(1) as count from packages
+            where launcher_pubkey = %s
+            and escrow_pubkey not in (
+                select escrow_pubkey from events where event_type = 'courier confirmed')""", (oren_pubkey,))
+        if int(sql.fetchone()[b'count']) >= 2:
+            return
+
+        import time
+        import paket_stellar
+        escrow_keypair = paket_stellar.stellar_base.Keypair.random()
+        escrow_pubkey = escrow_keypair.address().decode()
+        escrow_seed = escrow_keypair.seed().decode()
+        sql.execute("""
+            insert into packages (
+                escrow_pubkey, launcher_pubkey, recipient_pubkey, launcher_contact, recipient_contact, payment,
+                collateral, deadline, description, from_location, to_location, from_address, to_address
+            ) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (
+            escrow_pubkey, oren_pubkey, yamit_pubkey, oren_contact, yamit_contact,
+            50 * 10**7, 1 * 10**7, int(time.time()) + 60 * 60 * 24 * 2, 'Your business card',
+            from_location, to_location, from_address, to_address))
+        sql.execute("""
+            insert into events (user_pubkey, event_type, location, escrow_pubkey, kwargs)
+            values (%s, %s, %s, %s, %s)
+        """, (oren_pubkey, 'launched', from_location, escrow_pubkey, '{}'))
+        sql.execute("""
+            insert into events (user_pubkey, event_type, location, escrow_pubkey, kwargs)
+            values (%s, %s, %s, %s, %s)
+        """, (
+            oren_pubkey, 'escrow seed added', from_location, escrow_pubkey,
+            "{{'escrow_seed': '{}'}}".format(escrow_seed)))
+
 if __name__ == '__main__':
+    launch_demo_packages()
+    sys.exit(4)
     if len(sys.argv) != 2:
         sys.exit(1)
     if sys.argv[1] == 'servers':
