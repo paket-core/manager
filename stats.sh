@@ -11,11 +11,13 @@ if [ "$1" == servers ]; then
         echo $subdomain $(curl -L --write-out %{http_code} --silent --output /dev/null https://$subdomain.paket.global)
     done | python ./stats.py servers
     echo router_api $(curl -L --write-out %{http_code} --silent --output /dev/null -X POST http://route.paket.global/v3/events) | python ./stats.py servers
+    echo stellar-testnet $(curl -L --write-out %{http_code} --silent --output /dev/null https://horizon-testnet.stellar.org/) | python ./stats.py servers
 elif [ "$1" == commits ]; then
     if pgrep -fx 'python ./stats.py commits'; then
         echo 'commits stats already running'
         exit 1
     fi
+
 
     for repo in bridge explorer funder manager mobile paket-stellar router util webserver website; do
         repodir=/tmp/$repo
