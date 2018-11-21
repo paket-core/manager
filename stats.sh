@@ -1,24 +1,21 @@
 #!/bin/bash
+if pgrep -fx "python ./stats.py $1"; then
+    echo $1 stats already running
+    exit 1
+fi
 pushd "$(dirname "${BASH_SOURCE[0]}")"
 . paket.env
 
 if [ "$1" == servers ]; then
-    if pgrep -fx 'python ./stats.py servers'; then
-        echo 'servers stats already running'
-        exit 1
-    fi
     for subdomain in www route bridge fund explorer; do
         echo $subdomain $(curl -L --write-out %{http_code} --silent --output /dev/null https://$subdomain.paket.global)
     done | python ./stats.py servers
+
     echo router_api $(curl -L --write-out %{http_code} --silent --output /dev/null -X POST http://route.paket.global/v3/events) | python ./stats.py servers
+
     echo stellar-testnet $(curl -L --write-out %{http_code} --silent --output /dev/null https://horizon-testnet.stellar.org/) | python ./stats.py servers
+
 elif [ "$1" == commits ]; then
-    if pgrep -fx 'python ./stats.py commits'; then
-        echo 'commits stats already running'
-        exit 1
-    fi
-
-
     for repo in bridge explorer funder manager mobile paket-stellar router util webserver website; do
         repodir=/tmp/$repo
         [ -d $repodir ] || git clone --bare https://github.com/paket-core/$repo $repodir > /dev/null
@@ -29,6 +26,11 @@ elif [ "$1" == commits ]; then
         git --no-pager log --all $since --numstat --format='%ct '$repo' %H %an'
         popd > /dev/null
     done | python ./stats.py commits
+
+elif [ "$1" == logs ]; then
+    LOGFILE=/var/log/paket.log
+    LOGFILE=/root/paket/manager/paket.log
+    tac $LOGFILE | head -1000 | grep ' ERR: ' | python ./stats.py logs
 
 else
     $0 servers
