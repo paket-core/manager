@@ -157,8 +157,6 @@ def launch_demo_packages():
 
 
 if __name__ == '__main__':
-    launch_demo_packages()
-    sys.exit(4)
     if len(sys.argv) != 2:
         sys.exit(1)
     if sys.argv[1] == 'servers':
@@ -167,3 +165,5 @@ if __name__ == '__main__':
         insert_commits()
     elif sys.argv[1] == 'logs':
         insert_log_errors()
+    elif sys.argv[1] == 'launch':
+        launch_demo_packages()

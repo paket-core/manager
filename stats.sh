@@ -38,6 +38,9 @@ elif [ "$1" == logs ]; then
     LOGFILE=/var/log/paket.log
     tac $LOGFILE | head -1000 | grep ' ERR: ' | python ./stats.py logs
 
+elif [ "$1" == launch ]; then
+    python ./stats.py launch
+
 fi
 popd
 rmdir $LOCKDIR
