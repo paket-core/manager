@@ -122,7 +122,9 @@ def launch_demo_packages():
             where launcher_pubkey = %s
             and escrow_pubkey not in (
                 select escrow_pubkey from events where event_type = 'courier confirmed')""", (launcher_pubkey,))
-        if int(sql.fetchone()[b'count']) >= 2:
+        num_of_unreserved = int(sql.fetchone()[b'count'])
+        if num_of_unreserved >= 2:
+            LOGGER.info("%s unreserved packages found, not generating new ones")
             return
 
         import time
@@ -139,16 +141,19 @@ def launch_demo_packages():
             escrow_pubkey, launcher_pubkey, recipient_pubkey, launcher_contact, recipient_contact,
             50 * 10**7, 1 * 10**7, int(time.time()) + 60 * 60 * 24 * 2, 'Your business card',
             from_location, to_location, from_address, to_address))
+        LOGGER.info("new package created (%s)", escrow_pubkey)
         sql.execute("""
             insert into events (user_pubkey, event_type, location, escrow_pubkey, kwargs)
             values (%s, %s, %s, %s, %s)
         """, (launcher_pubkey, 'launched', from_location, escrow_pubkey, '{}'))
+        LOGGER.info("package (%s) launched (should be called created)", escrow_pubkey)
         sql.execute("""
             insert into events (user_pubkey, event_type, location, escrow_pubkey, kwargs)
             values (%s, %s, %s, %s, %s)
         """, (
             launcher_pubkey, 'escrow seed added', from_location, escrow_pubkey,
             "{{'escrow_seed': '{}'}}".format(escrow_seed)))
+        LOGGER.info("package (%s) seed added", escrow_pubkey)
 
 
 if __name__ == '__main__':
