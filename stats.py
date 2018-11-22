@@ -108,7 +108,7 @@ def insert_log_errors():
 # FIXME This is just for the Belgrade demo.
 def launch_demo_packages():
     """Launch demo packages if there aren't enough already"""
-    launcher_pubkey = 'GBTWWXA3CDQOSRQ3645B2L4A345CRSKSV6MSBUO4LSHC26ZMNOYFN2YJ'
+    launcher_pubkey = 'GD7LZPOXGM6TDGN75LSOGQ6PGEJPIDI42SVWAGZYM5QLCDXE4DPE2QLI'
     recipient_pubkey = 'GDWDDROPMJ5FEXGU4ISVTVY34VX2OVYKZCXTNZNATWMQ5VMWQCXJ6Q2U'
     launcher_contact = '@launcher'
     recipient_contact = '@recipient'
