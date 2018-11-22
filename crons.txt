@@ -1,4 +1,6 @@
-* * * * * /home/paket/poc/manager/stats.sh
+* * * * * /home/paket/poc/manager/stats.sh servers
+* * * * * /home/paket/poc/manager/stats.sh logs
+0 * * * * /home/paket/poc/manager/stats.sh commits
 */10 * * * * /home/paket/poc/manager/routine.sh monitor
 */10 * * * * /home/paket/poc/manager/routine.sh pay
 */10 * * * * /home/paket/poc/manager/routine.sh fund
