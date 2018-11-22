@@ -124,7 +124,7 @@ def launch_demo_packages():
                 select escrow_pubkey from events where event_type = 'courier confirmed')""", (launcher_pubkey,))
         num_of_unreserved = int(sql.fetchone()[b'count'])
         if num_of_unreserved >= 2:
-            LOGGER.info("%s unreserved packages found, not generating new ones")
+            LOGGER.info("%s unreserved packages found, not generating new ones", num_of_unreserved)
             return
 
         import time
