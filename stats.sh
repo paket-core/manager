@@ -36,7 +36,6 @@ elif [ "$1" == commits ]; then
 
 elif [ "$1" == logs ]; then
     LOGFILE=/var/log/paket.log
-    LOGFILE=/root/paket/manager/paket.log
     tac $LOGFILE | head -1000 | grep ' ERR: ' | python ./stats.py logs
 
 fi
