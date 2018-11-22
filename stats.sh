@@ -1,8 +1,15 @@
 #!/bin/bash
-if pgrep -fx "python ./stats.py $1"; then
-    echo $1 stats already running
+if ! [ "$1" ]; then
+    echo "Usage: $0 [servers|commits|logs]"
+    exit 2
+fi
+
+LOCKDIR="/tmp/stats.$1.lock"
+if ! mkdir $LOCKDIR; then
+    echo stats "$1" is already running, aborting
     exit 1
 fi
+
 pushd "$(dirname "${BASH_SOURCE[0]}")"
 . paket.env
 
@@ -32,8 +39,6 @@ elif [ "$1" == logs ]; then
     LOGFILE=/root/paket/manager/paket.log
     tac $LOGFILE | head -1000 | grep ' ERR: ' | python ./stats.py logs
 
-else
-    $0 servers
-    $0 commits
 fi
 popd
+rmdir $LOCKDIR
