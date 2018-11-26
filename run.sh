@@ -7,7 +7,7 @@ if [ "$1" ]; then
     if [ "$FLASK_DEBUG" ]; then
         PYTHONPATH="..:../$1" ./venv/bin/python -m $1
     else
-        PYTHONPATH="../$1" uwsgi -s "/tmp/$1.sock" --chmod-socket=666 --manage-script-name --mount /=__init__:APP
+        PYTHONPATH="../$1" uwsgi -l 300 -s "/tmp/$1.sock" --chmod-socket=666 --manage-script-name --mount /=__init__:APP
     fi
 else
     for server in "${PAKET_SERVERS[@]}"; do
